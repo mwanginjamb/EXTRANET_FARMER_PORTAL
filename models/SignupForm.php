@@ -42,6 +42,22 @@ class SignupForm extends Model
                 'password_repeat', 'compare', 'compareAttribute' => 'password',
                 'message' => "Passwords do not match.",
             ],
+
+            ['National_ID', 'trim'],
+            ['National_ID', 'required'],
+            ['National_ID', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This National ID Number has already been taken.'],
+            ['National_ID', 'string', 'min' => 8, 'max' => 255],
+        ];
+    }
+
+
+     /**
+     * @return array customized attribute labels
+     */
+    public function attributeLabels()
+    {
+        return [
+            'National_ID' => 'National ID Number',
         ];
     }
 
