@@ -17,13 +17,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+            <?php $form = ActiveForm::begin([
+                'id' => 'form-signup',
+                'encodeErrorSummary' => false,
+                'errorSummaryCssClass' => 'help-block',
+            ]); ?>
+
+                <?= $form->errorSummary($model) ?>
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'email')->textInput(['type' => 'email']); ?>
 
-                <?= $form->field($model, 'National_ID') ?>
+                <?= $form->field($model, 'National_ID')->textInput() ?>
+
+                <?= $form->field($model, 'Registration_Type')->dropDownList(['Farmer' => 'Farmer','Transporter' => 'Transporter'],['prompt' => 'Select ...']) ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 

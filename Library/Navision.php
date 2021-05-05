@@ -175,7 +175,7 @@ class Navision extends Component
             // we unregister the current HTTP wrapper
             stream_wrapper_unregister('http');
             // we register the new HTTP wrapper //'\\common\\components\\NTLMStream'
-            stream_wrapper_register('http', '\\common\\library\\NTLMStream') or die("Failed to register protocol");
+            stream_wrapper_register('http', '\\app\\library\\NTLMStream') or die("Failed to register protocol");
 
 
             $client = new NTLMSoapClient($soapWsdl, $options);
@@ -196,6 +196,8 @@ class Navision extends Component
  **/
 class NTLMSoapClient extends \SoapClient
 {
+
+
     function __doRequest($request, $location, $action, $version, $one_way = NULL)
     {
         $headers = array(
@@ -207,6 +209,9 @@ class NTLMSoapClient extends \SoapClient
         );
 
         $this->__last_request_headers = $headers;
+
+
+
         $ch = curl_init($location);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -218,6 +223,8 @@ class NTLMSoapClient extends \SoapClient
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         $response = @curl_exec($ch);
+
+
 
         return $response;
 

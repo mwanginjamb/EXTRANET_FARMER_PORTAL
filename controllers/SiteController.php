@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\SignupForm;
 use app\models\VerifyEmailForm;
 use app\models\ContactForm;
+use app\models\Registration;
 
 class SiteController extends Controller
 {
@@ -68,7 +69,53 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new Registration();
+        $service = Yii::$app->params['ServiceName']['FarmerApplication'];
+
+
+        if(Yii::$app->request->post() && Yii::$app->navhelper->loadpost(Yii::$app->request->post()['Registration'],$model) ){
+
+
+            $model->Registration_Type = Yii::$app->user->identity->Registration_Type;
+            $model->Source_Type = 'Channels';
+            
+            $result = Yii::$app->navhelper->postData($service,$model);
+            if(!is_string($result)){
+
+                Yii::$app->session->setFlash('success','Application Saved Successfully.' );
+                return $this->redirect(['view','No' => $result->ID_Number]);
+
+            }else{
+                Yii::$app->session->setFlash('error','Error  '.$result );
+                 return $this->render('index',[
+                    'model' => $model 
+                ]);
+
+            }
+
+        }
+
+
+
+        return $this->render('index',[
+            'model' => $model 
+        ]);
+    }
+
+
+    public function actionView($No){
+        $model = new Registration();
+        $service = Yii::$app->params['ServiceName']['FarmerApplication'];
+
+        $result = Yii::$app->navhelper->findOne($service, 'ID_Number', $No);
+
+
+        //load nav result to model
+        $model = Yii::$app->navhelper->loadmodel($result, $model);
+
+        return $this->render('view',[
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -250,5 +297,55 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
+    }
+
+
+
+/* CUSTOM FUNCTIONS RELATED TO NAV*/
+
+     public function actionSubcountydd($countyCode){
+        $service = Yii::$app->params['ServiceName']['SubCounties'];
+        $filter = ['County_Code' => $countyCode];
+        $result = \Yii::$app->navhelper->getData($service, $filter);
+
+
+
+         $data[] =[
+            'Code' => '',
+            'Description' => 'Select ...',
+        ];
+
+        if(is_array($result)){
+           // $data =  Yii::$app->navhelper->refactorArray($result,'Sub_County_Code','Subcounty_Name');
+
+
+
+             $i = 0;
+            foreach($result as $res){
+                if(!empty($res->Sub_County_Code) && !empty($res->Subcounty_Name)){
+                    ++$i;
+                    $data[] = [
+                        'Code' => $res->Sub_County_Code,
+                        'Description' => $res->Subcounty_Name
+                    ];
+                }
+            }
+           
+
+
+        }
+
+       // Yii::$app->recruitment->printrr($data);
+
+        if(count($data) )
+        {
+            foreach($data  as $k=>$v )
+            {
+                echo "<option value=".$v['Code'].">".$v['Description']."</option>";
+            }
+        }else{
+            echo "<option value=''>No data Available</option>";
+        }
+        
     }
 }

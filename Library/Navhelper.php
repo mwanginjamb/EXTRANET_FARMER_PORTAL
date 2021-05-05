@@ -10,8 +10,8 @@ class Navhelper extends Component{
     public function getData($service,$params=[]){
         # return true; //comment after dev or after testing outside Navision scope env
         $identity = \Yii::$app->user->identity;
-        $username = (!Yii::$app->user->isGuest)? Yii::$app->user->identity->{'User ID'} : Yii::$app->params['NavisionUsername'];
-        $password = Yii::$app->session->has('IdentityPassword')? Yii::$app->session->get('IdentityPassword'):Yii::$app->params['NavisionPassword'];
+        $username =  Yii::$app->params['NavisionUsername'];
+        $password = Yii::$app->params['NavisionPassword'];
 
         $creds = (object)[];
         $creds->UserName = $username;
@@ -52,8 +52,8 @@ class Navhelper extends Component{
 
         $url  =  new Services($service);
         $wsdl = $url->getUrl();
-        $username = (!Yii::$app->user->isGuest)? Yii::$app->user->identity->{'User ID'} : Yii::$app->params['NavisionUsername'];
-        $password = Yii::$app->session->has('IdentityPassword')? Yii::$app->session->get('IdentityPassword'):Yii::$app->params['NavisionPassword'];
+        $username =  Yii::$app->params['NavisionUsername'];
+        $password = Yii::$app->params['NavisionPassword'];
 
         $creds = (object)[];
         $creds->UserName = $username;
@@ -79,8 +79,8 @@ class Navhelper extends Component{
     //create record(s)-----> post data
     public function postData($service,$data){
         $identity = \Yii::$app->user->identity;
-        $username = (!Yii::$app->user->isGuest)? Yii::$app->user->identity->{'User ID'} : Yii::$app->params['NavisionUsername'];
-        $password = Yii::$app->session->has('IdentityPassword')? Yii::$app->session->get('IdentityPassword'):Yii::$app->params['NavisionPassword'];
+        $username =  Yii::$app->params['NavisionUsername'];
+        $password = Yii::$app->params['NavisionPassword'];
         $post = Yii::$app->request->post();
 
         $creds = (object)[];
@@ -123,8 +123,8 @@ class Navhelper extends Component{
     //update data   -->post data
     public function updateData($service,$data, $exception = []){
         $identity = \Yii::$app->user->identity;
-        $username = (!Yii::$app->user->isGuest)? Yii::$app->user->identity->{'User ID'} : Yii::$app->params['NavisionUsername'];
-        $password = Yii::$app->session->has('IdentityPassword')? Yii::$app->session->get('IdentityPassword'):Yii::$app->params['NavisionPassword'];
+        $username =  Yii::$app->params['NavisionUsername'];
+        $password = Yii::$app->params['NavisionPassword'];
         $post = Yii::$app->request->post();
 
         $creds = (object)[];
@@ -162,8 +162,8 @@ class Navhelper extends Component{
     //purge data --> pass key as get param
     public function deleteData($service,$key){
         $identity = \Yii::$app->user->identity;
-        $username = (!Yii::$app->user->isGuest)? Yii::$app->user->identity->{'User ID'} : Yii::$app->params['NavisionUsername'];
-        $password = Yii::$app->session->has('IdentityPassword')? Yii::$app->session->get('IdentityPassword'):Yii::$app->params['NavisionPassword'];
+        $username =  Yii::$app->params['NavisionUsername'];
+        $password = Yii::$app->params['NavisionPassword'];
         $url = new Services($service);
         $creds = (object)[];
         $creds->UserName = $username;
@@ -182,8 +182,8 @@ class Navhelper extends Component{
 
      public function Codeunit($service,$data,$method){
         $identity = \Yii::$app->user->identity;
-        $username = (!Yii::$app->user->isGuest)? Yii::$app->user->identity->{'User ID'} : Yii::$app->params['NavisionUsername'];
-        $password = Yii::$app->session->has('IdentityPassword')? Yii::$app->session->get('IdentityPassword'):Yii::$app->params['NavisionPassword'];
+        $username =  Yii::$app->params['NavisionUsername'];
+        $password = Yii::$app->params['NavisionPassword'];
 
         $creds = (object)[];
         $creds->UserName = $username;

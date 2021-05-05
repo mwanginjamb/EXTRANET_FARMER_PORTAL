@@ -8,7 +8,7 @@ return [
     'user.passwordResetTokenExpire' => 3600,
 
     'powered' => 'Iansoft Technologies Ltd.',
-    'NavisionUsername'=>'Administrator',
+    'NavisionUsername'=>'cereals\Administrator',
     'NavisionPassword'=>'Ncpb&admin&',
     'generalTitle' => 'NCPB EXTRANET ',
 
@@ -44,6 +44,10 @@ return [
        'AppraisalManagement' => 'AppraisalManagement', // 60000 Appraisal Mgt
     ],
     'ServiceName'=>[
+
+        'FarmerApplication' => 'FarmerApplication', //50085
+        'VendorCard' => 'VendorCard', //50021  --Farmer Card
+        'FarmerList' => 'FarmerList', //50020 --Vendor/FarmerList
 
         'EmployeeCard' => 'EmployeeCard', // 70000
         'EmployeeList' => 'EmployeeList',// 5201

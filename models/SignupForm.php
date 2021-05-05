@@ -14,6 +14,8 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $password_repeat;
+    public $National_ID;
+    public $Registration_Type;
 
 
     /**
@@ -47,6 +49,8 @@ class SignupForm extends Model
             ['National_ID', 'required'],
             ['National_ID', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This National ID Number has already been taken.'],
             ['National_ID', 'string', 'min' => 8, 'max' => 255],
+            ['Registration_Type','required'],
+            ['Registration_Type', 'in', 'range' => ['Farmer', 'Transporter']],
         ];
     }
 
@@ -78,6 +82,8 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
+        $user->Registration_Type = $this->Registration_Type;
+        $user->National_ID = $this->National_ID;
         return $user->save() && $this->sendEmail($user);
 
     }
@@ -92,7 +98,7 @@ class SignupForm extends Model
         return Yii::$app
             ->mailer
             ->compose(
-                ['html' => 'recruitmentemailVerify-html', 'text' => 'emailVerify-text'],
+                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
                 ['user' => $user]
             )
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' Support'])

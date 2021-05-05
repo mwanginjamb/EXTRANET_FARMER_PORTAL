@@ -1,53 +1,87 @@
 <?php
 
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+
+
 /* @var $this yii\web\View */
 
 $this->title = \Yii::$app->name;
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
+    
 
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+            <div class="col-md-12 col-lg-12">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <div class="card-title"><?= Yii::$app->user->identity->Registration_Type ?> Registration</div>
+                    </div>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+                    <div class="card-body">
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                        <?php $form = ActiveForm::begin([
+                                'id' => 'form-signup',
+                                'encodeErrorSummary' => false,
+                                'errorSummaryCssClass' => 'help-block',
+                            ]); ?>
+                                                
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                                    <div class="row">
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+                                        <div class="col-md-6">
+                                         <?= $form->field($model, 'ID_Number')->textInput(['value' => Yii::$app->user->identity->National_ID, 'readonly' => true]) ?>
+                                          <?= $form->field($model, 'First_Name')->textInput(['maxlength' => 100]) ?>
+                                          <?= $form->field($model, 'Middle_Name')->textInput(['maxlength' => 100]) ?>
+                                          <?= $form->field($model, 'Last_Name')->textInput(['maxlength' => 100]) ?>
+                                          <?= $form->field($model, 'County')->dropDownList($model->counties,[
+                                            'prompt' => 'Select County.',
+                                            'onchange' => '
+
+                                                $.post("../site/subcountydd?countyCode="+$(this).val(), (data) => {
+                                                       $("select#registration-sub_county").html(data);
+                                                });
+
+                                            ',
+
+                                        ]) ?>
+                                          <?= $form->field($model, 'Sub_County')->dropDownList([], ['prompt' => 'Select ...']) ?>
+                                          <?= $form->field($model, 'Ward')->textInput(['maxlength' => 100]); ?>
+                                    </div>
+
+
+                                     <div class="col-md-6">
+                                         <?= $form->field($model, 'Gender')->dropDownList(['_blank_' => '_blank_', 'Male' => 'Male','Female' => 'Female'],['prompt' => 'Select ...']) ?>
+                                         <?= $form->field($model, 'Phone_No')->textInput(['maxlength' => 15]) ?>
+                                         <?= $form->field($model, 'E_Mail')->textInput(['readonly' => true, 'value' => Yii::$app->user->identity->email]) ?>
+                                         <?= $form->field($model, 'Status')->textInput(['readonly' => true, 'value' => 'Application']) ?>
+                                         <?= $form->field($model, 'Date_of_Birth')->textInput(['type' => 'date']) ?>
+                                         <?= $form->field($model, 'Land_Acrege')->textInput(['type' => 'number']) ?>
+                                         <?= $form->field($model, 'KRA_Pin_No')->textInput(['maxlength' => '35']) ?>
+                                         <?= $form->field($model, 'Disabled')->checkbox(['checked' => $model->Disabled]) ?>
+                                    </div>
+                                        
+                                    </div>
+
+
+                                     <div class="form-group">
+                                         <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+
+                                    </div>
+
+                            <?php ActiveForm::end(); ?>
+                    </div>
+                </div>
+                        
+            </div><!--End Card.-- >
+
         </div>
+            
 
     </div>
 </div>
