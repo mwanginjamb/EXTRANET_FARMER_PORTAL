@@ -182,7 +182,7 @@ class SiteController extends Controller
         $model = new Attachment();
 
          $service = Yii::$app->params['ServiceName']['AttachmentSetup'];
-         $filter = ['Registration_Type' => Yii::$app->user->identity->Registration_Type];
+         $filter = ['Registration_Type' => '<>'.Yii::$app->user->identity->Registration_Type];
          $UploadList = Yii::$app->navhelper->getData($service, $filter);
 
 
@@ -251,6 +251,14 @@ class SiteController extends Controller
         ]);
        
        
+    }
+
+    public function actionRead($path)
+    {
+        $model = new Attachment();
+        
+        Yii::$app->recruitment->printrr($model->readAttachment($path));
+
     }
 
 

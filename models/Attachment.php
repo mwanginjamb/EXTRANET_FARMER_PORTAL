@@ -85,7 +85,8 @@ class Attachment extends Model
         }
         $service = Yii::$app->params['ServiceName']['RegistrationAttachments'];
         $filter = [
-            'Line_No' => $DocNo
+            'DocumentTypeID' => $DocNo,
+            'National_ID' => Yii::$app->user->identity->National_ID
         ];
 
         $result = Yii::$app->navhelper->getData($service,$filter);
@@ -101,19 +102,42 @@ class Attachment extends Model
     {
         $service = Yii::$app->params['ServiceName']['RegistrationAttachments'];
         $filter = [
-            'Line_No' => $DocNo
+            'DocumentTypeID' => $DocNo,
+            'National_ID' => Yii::$app->user->identity->National_ID
         ];
 
         $result = Yii::$app->navhelper->getData($service,$filter);
 
-        $path = $result->FilePath;
+        
 
-        if(is_file($path))
-        {
-            $binary = file_get_contents($path);
-            $content = chunk_split(base64_encode($binary));
-            return $content;
-        }
+        $path = strtolower($result[0]->FilePath);
+
+         // $binary = $this->curl_get_contents($path);
+
+        $binary = file_get_contents($path);
+
+       if(is_string($path)){
+            return base64_encode($binary);
+       }
+
+       return false;
+
+       
+
+    }
+
+    function curl_get_contents($url)
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        $data = curl_exec($ch);
+        curl_close($ch);
+
+        return $data;
     }
 
    

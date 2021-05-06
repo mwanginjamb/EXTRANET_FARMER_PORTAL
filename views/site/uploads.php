@@ -97,7 +97,7 @@ $this->title = \Yii::$app->name.' - File Uploads';
 
                         <?php } ?>
 
-                        <?php if(Yii::$app->user->identity->Registration_Type == 'Transporter'){ ?>
+                        <?php if(Yii::$app->user->identity->Registration_Type !== 'Transporter'){ ?>
 
                             <table class="table">
                                 <thead>
@@ -110,7 +110,7 @@ $this->title = \Yii::$app->name.' - File Uploads';
 
                                         <tr>
                                             <td><?=$doc->Description?></td>
-                                            <td><?= ($model->file($doc->Line_No))?Html::a('view',['site/read','path' => $model->file($doc->Line_No)],['class' => 'btn btn-warning btn-sm','view Uploaded attachment.']):'Not Yet Uploaded '?></td>
+                                            <td><?= ($model->file($doc->Line_No))?Html::a('view',['site/read','path' => $doc->Line_No],['class' => 'btn btn-warning btn-sm','view Uploaded attachment.']):'Not Yet Uploaded '?></td>
                                             <td>
                                                 
 
