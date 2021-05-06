@@ -14,12 +14,39 @@ $this->title = \Yii::$app->name;
 
     <div class="body-content">
 
+        <?php
+
+             if(Yii::$app->session->hasFlash('success')){
+            print ' <div class="alert alert-success alert-dismissable">
+                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h5><i class="icon fas fa-check"></i> Success!</h5>
+ ';
+            echo Yii::$app->session->getFlash('success');
+            print '</div>';
+        }else if(Yii::$app->session->hasFlash('error')){
+            print ' <div class="alert alert-danger alert-dismissable">
+                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h5><i class="icon fas fa-times"></i> Error!</h5>
+                                ';
+            echo Yii::$app->session->getFlash('error');
+            print '</div>';
+        }
+
+        ?>
+
         <div class="row">
 
             <div class="col-md-12 col-lg-12">
                 <div class="card card-success">
                     <div class="card-header">
                         <div class="card-title"><?= Yii::$app->user->identity->Registration_Type ?> Registration</div>
+
+
+
+
+                         <div class="card-tools">
+                            <?= Html::a('<i class="fas fa-edit mx-1"></i>Update',['site/update','No' => $model->ID_Number],['class' => ' btn btn-sm btn-outline-light']) ?>
+                         </div>
                     </div>
 
                     <div class="card-body">

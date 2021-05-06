@@ -12,6 +12,9 @@ use app\models\SignupForm;
 use app\models\VerifyEmailForm;
 use app\models\ContactForm;
 use app\models\Registration;
+use app\models\Attachment;
+
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
@@ -71,6 +74,15 @@ class SiteController extends Controller
     {
         $model = new Registration();
         $service = Yii::$app->params['ServiceName']['FarmerApplication'];
+        $model->isNewRecord = true;
+
+
+        // Redirect Appropriately if user has an active application
+
+        if($model->hasApplication(Yii::$app->user->identity->National_ID))
+        {
+           return  $this->redirect(['view','No' => Yii::$app->user->identity->National_ID]);
+        }
 
 
         if(Yii::$app->request->post() && Yii::$app->navhelper->loadpost(Yii::$app->request->post()['Registration'],$model) ){
@@ -103,6 +115,52 @@ class SiteController extends Controller
     }
 
 
+    public function actionUpdate($No)
+    {
+        $model = new Registration();
+        $model->isNewRecord = false;
+        $service = Yii::$app->params['ServiceName']['FarmerApplication'];
+
+
+        if(Yii::$app->request->post() && Yii::$app->navhelper->loadpost(Yii::$app->request->post()['Registration'],$model) ){
+
+
+            $model->Registration_Type = Yii::$app->user->identity->Registration_Type;
+            $model->Source_Type = 'Channels';
+            
+            $result = Yii::$app->navhelper->updateData($service,$model);
+            if(!is_string($result)){
+
+                Yii::$app->session->setFlash('success','Application Updated Successfully.' );
+                return $this->redirect(['view','No' => $result->ID_Number]);
+
+            }else{
+                Yii::$app->session->setFlash('error','Error  '.$result );
+                 return $this->render('index',[
+                    'model' => $model 
+                ]);
+
+            }
+
+        }
+
+
+        /*Select Model to Update*/
+
+         $result = Yii::$app->navhelper->findOne($service, 'ID_Number', $No);
+
+
+        //load nav result to model
+        $model = Yii::$app->navhelper->loadmodel($result, $model);
+
+
+
+        return $this->render('index',[
+            'model' => $model 
+        ]);
+    }
+
+
     public function actionView($No){
         $model = new Registration();
         $service = Yii::$app->params['ServiceName']['FarmerApplication'];
@@ -117,6 +175,85 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+
+    public function actionUploads()
+    {
+        $model = new Attachment();
+
+         $service = Yii::$app->params['ServiceName']['AttachmentSetup'];
+         $filter = ['Registration_Type' => Yii::$app->user->identity->Registration_Type];
+         $UploadList = Yii::$app->navhelper->getData($service, $filter);
+
+
+
+
+
+
+           // Upload Attachment File
+        if(!empty($_FILES)){
+           
+            $model->DocumentTypeID =  Yii::$app->request->post()['Attachment']['DocumentTypeID'];
+            $model->attachmentfile = UploadedFile::getInstanceByName('imageFile');
+
+            //Yii::$app->recruitment->printrr($model);
+
+            $result = $model->Upload();
+
+            
+             if(!is_string($result) || $result == true){
+                Yii::$app->session->setFlash('success','File Saved Successfully. ', true);
+                  
+            }else{
+                Yii::$app->session->setFlash('error','Could not save attachment.'.$result, true);
+                 
+            }
+            
+        }
+
+        // Get Available farm Images
+
+        $FarmImages = $model->images;
+
+        
+
+        return $this->render('uploads', [
+            'model' => $model,
+            'uploadList' => $UploadList,
+            'FarmImages' => $FarmImages 
+        ]);
+    }
+
+
+    public function actionRemoveImage()
+    {
+        $service = Yii::$app->params['ServiceName']['RegistrationAttachments'];
+        $result = Yii::$app->navhelper->deleteData($service,Yii::$app->request->get('Key'));
+
+        if(!is_string($result))
+        {
+            Yii::$app->session->setFlash('success','File Deleted Successfully. ', true);
+        }
+        else{
+            Yii::$app->session->setFlash('error',$result, true);
+        }
+
+         $model = new Attachment();
+         $Setupservice = Yii::$app->params['ServiceName']['AttachmentSetup'];
+         $filter = ['Registration_Type' => '<>'.Yii::$app->user->identity->Registration_Type];
+         $UploadList = Yii::$app->navhelper->getData($Setupservice, $filter);
+         $FarmImages = $model->images;
+
+         return $this->render('uploads', [
+            'model' => $model,
+            'uploadList' => $UploadList,
+            'FarmImages' => $FarmImages 
+        ]);
+       
+       
+    }
+
+
 
     /**
      * Login action.

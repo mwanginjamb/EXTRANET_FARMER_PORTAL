@@ -64,4 +64,17 @@ public $isNewRecord;
         $result = \Yii::$app->navhelper->getData($service, $filter);
         return Yii::$app->navhelper->refactorArray($result,'Sub_County_Code','Subcounty_Name');
     }
+
+    public function hasApplication($No)
+    {
+        $model = new Registration();
+        $service = Yii::$app->params['ServiceName']['FarmerApplication'];
+
+        $result = Yii::$app->navhelper->findOne($service, 'ID_Number', $No);
+
+
+       return is_object($result) && isset($result->ID_Number);
+
+        
+    }
 }

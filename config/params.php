@@ -49,6 +49,9 @@ return [
         'VendorCard' => 'VendorCard', //50021  --Farmer Card
         'FarmerList' => 'FarmerList', //50020 --Vendor/FarmerList
 
+        'AttachmentSetup' => 'AttachmentSetup', // 90002
+        'RegistrationAttachments' => 'RegistrationAttachments', //90003
+
         'EmployeeCard' => 'EmployeeCard', // 70000
         'EmployeeList' => 'EmployeeList',// 5201
         'EthnicGroups' => 'EthnicGroups', //70409
@@ -241,5 +244,14 @@ return [
         'Lease' => 28,
         'Leave Adj.' => 29
     ],
+
+    'MimeTypes' => [
+        'image/jpeg',
+        'image/png',
+        'application/pdf'
+    ],
+
+    'maxUploadFiles' => 1,
+    'maxSize' => 1024*1024*10
 
 ];

@@ -14,12 +14,33 @@ $this->title = \Yii::$app->name;
 
     <div class="body-content">
 
+        <?php
+
+             if(Yii::$app->session->hasFlash('success')){
+            print ' <div class="alert alert-success alert-dismissable">
+                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h5><i class="icon fas fa-check"></i> Success!</h5>
+ ';
+            echo Yii::$app->session->getFlash('success');
+            print '</div>';
+        }else if(Yii::$app->session->hasFlash('error')){
+            print ' <div class="alert alert-danger alert-dismissable">
+                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h5><i class="icon fas fa-times"></i> Error!</h5>
+                                ';
+            echo Yii::$app->session->getFlash('error');
+            print '</div>';
+        }
+
+        ?>
+
         <div class="row">
 
             <div class="col-md-12 col-lg-12">
                 <div class="card card-success">
                     <div class="card-header">
                         <div class="card-title"><?= Yii::$app->user->identity->Registration_Type ?> Registration</div>
+
                     </div>
 
                     <div class="card-body">
@@ -33,7 +54,7 @@ $this->title = \Yii::$app->name;
 
 
                                     <div class="row">
-
+                                        <?= $form->field($model, 'Key')->hiddenInput()->label(false) ?>
                                         <div class="col-md-6">
                                          <?= $form->field($model, 'ID_Number')->textInput(['value' => Yii::$app->user->identity->National_ID, 'readonly' => true]) ?>
                                           <?= $form->field($model, 'First_Name')->textInput(['maxlength' => 100]) ?>
@@ -68,9 +89,9 @@ $this->title = \Yii::$app->name;
                                         
                                     </div>
 
-
+                                    
                                      <div class="form-group">
-                                         <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                                         <?= Html::submitButton($model->isNewRecord?'Submit':'Update Data', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
 
                                     </div>
 
