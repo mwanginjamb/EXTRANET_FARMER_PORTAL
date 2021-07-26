@@ -36,3 +36,5 @@ tests/_support/_generated
 .pdf
 .jpg
 .png
+
+.env

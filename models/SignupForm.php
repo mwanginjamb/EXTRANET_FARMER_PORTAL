@@ -61,7 +61,7 @@ class SignupForm extends Model
     public function attributeLabels()
     {
         return [
-            'National_ID' => 'National ID Number',
+            'National_ID' => 'ID Number',
         ];
     }
 

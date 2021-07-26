@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'adminEmail' => 'customer@softeboard.com',
-    'senderEmail' => 'customer@softeboard.com',
-    'supportEmail' => 'customer@softeboard.com',
+    'adminEmail' => 'rck.support@softeboard.com',
+    'senderEmail' => 'rck.support@softeboard.com',
+    'supportEmail' => 'rck.support@softeboard.com',
     'senderName' => 'NCPB Mailer',
     'user.passwordResetTokenExpire' => 3600,
 

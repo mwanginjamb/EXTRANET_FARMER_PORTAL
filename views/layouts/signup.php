@@ -45,7 +45,7 @@ $absoluteUrl = \yii\helpers\Url::home(true);
 
 <nav class="navbar navbar-expand-md bg-success navbar-dark fixed-top ">
     <div class="container">
-        <a href="/" class="navbar-brand">
+        <a href="#" class="navbar-brand">
             <img src="<?= $webroot ?>/images/Logo.jpg" alt="NCPB LOGO" class="rounded-circle" width="50" height="70">
             <h3 class="d-inline align-middle"><?= env('BRAND') ?></h3>
         </a>
@@ -55,12 +55,11 @@ $absoluteUrl = \yii\helpers\Url::home(true);
         </button>
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ml-auto">
+            <!--<ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <!-- <a href="#" class="nav-link active">Renders</a> -->
-                    <?php Html::a('Tenders',['site/tenders'],['class' => 'nav-link active'])?>
+                    <a href="#" class="nav-link active">Profile</a>
                 </li>
-                 <!-- <li class="nav-item">
+                 <li class="nav-item">
                     <a href="#" class="nav-link">Contracts</a>
                 </li>
                  <li class="nav-item">
@@ -68,8 +67,8 @@ $absoluteUrl = \yii\helpers\Url::home(true);
                 </li>
                  <li class="nav-item">
                     <a href="#" class="nav-link">Documents</a>
-                </li> -->
-            </ul>
+                </li>
+            </ul>-->
         </div>
     </div>
 </nav>
@@ -78,14 +77,14 @@ $absoluteUrl = \yii\helpers\Url::home(true);
 <section class="signup bg-light my-5 p-5 text-center">
     <div class="container ">
 
-        <p class="display-4 py-3">Fill out below form to login.</p>
+       
          <div class="row">
             <div class="col-md-5 d-none d-md-block">
-                
-                <img src="<?= $webroot ?>/svgs/login.svg" class="img-fluid" />
+                <h1 class="display-4"> Welcome! </h1>
+                <img src="<?= $webroot ?>/svgs/welcome.svg" class="img-fluid" />
             </div>
              <div class="col-md-7 col-sm-12">
-               
+                <h3 class="display-4">Signup as a Farmer Today.</h3>
                 <div class="card text-center card-form">
                     <div class="card-body">
                          <?= $content?>
@@ -100,7 +99,7 @@ $absoluteUrl = \yii\helpers\Url::home(true);
 
 
 
-
+</body>
 
 <footer class="text-center text-lg-start bg-light text-muted ">
 	<section class="d-flex justify-content-center justify-content-lg-between p-4 border-top">

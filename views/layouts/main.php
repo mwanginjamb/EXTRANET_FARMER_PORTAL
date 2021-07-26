@@ -20,7 +20,10 @@ AdminlteAsset::register($this);
 
 $webroot = Yii::getAlias(@$webroot);
 $absoluteUrl = \yii\helpers\Url::home(true);
-$employee = ''
+$vendor = (!Yii::$app->user->isGuest && Yii::$app->user->identity->VendorId)?Yii::$app->user->identity->vendor:[];
+
+
+ // Yii::$app->recruitment->printrr(Yii::$app->user->identity->vendor);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -59,9 +62,9 @@ $employee = ''
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="<?= $absoluteUrl ?>site" class="nav-link">Home</a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="./uploads" class="nav-link">Document Uploads</a>
-                </li>
+                <!--<li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>-->
             </ul>
 
             <!-- SEARCH FORM -->
@@ -177,17 +180,16 @@ $employee = ''
 
                         <div class="dropdown-divider"></div>
 
-                        <?= (!Yii::$app->user->isGuest)? Html::a('<i class="fas fa-sign-out-alt"></i> Logout','/site/logout/',
-                        [
+                        <?= (!Yii::$app->user->isGuest)? Html::a('<i class="fas fa-sign-out-alt"></i> Logout','/site/logout/',[
                             'class'=> 'dropdown-item',
                             'data' => [
-                                'method' => 'POST'
+                                'method'=> 'POST'
                             ]
                         ]):''; ?>
 
                         <div class="dropdown-divider"></div>
 
-                        <?= Html::a('<i class="fas fa-user"></i> Profile','employee/',['class'=> 'dropdown-item']); ?>
+                        <?= Html::a('<i class="fas fa-user"></i> Update Profile', $absoluteUrl.'site/update',['class'=> 'dropdown-item']); ?>
 
                         <div class="dropdown-divider"></div>
 
@@ -218,6 +220,7 @@ $employee = ''
             </a>
 
             <!-- Sidebar -->
+            <?php if(Yii::$app->user->identity->VendorId): ?>
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -225,7 +228,7 @@ $employee = ''
                         <img src="<?= $webroot ?>/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="<?= $absoluteUrl ?>employee/" class="d-block"><?= (!Yii::$app->user->isGuest)? ucwords(Yii::$app->user->identity->username): ''?></a>
+                        <a href="<?= $absoluteUrl ?>employee/" class="d-block"><?= (!Yii::$app->user->isGuest && isset($vendor->Name))? ucwords($vendor->Name): ''?></a>
                     </div>
                 </div>
 
@@ -237,52 +240,47 @@ $employee = ''
 
 
 
-
-
-                        <!--Leave Management-->
-                        <li class="nav-item has-treeview  <?= currentCtrl('leave')?'menu-open':'' ?>">
-                            <a href="#" class="nav-link <?= currentCtrl('leave')?'active':'' ?>">
-                                <i class="nav-icon fas fa-paper-plane"></i>
-                                <p>
-                                    My Statements
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-
-                                
-                                <li class="nav-item">
-                                    <a href="<?= $absoluteUrl ?>leave/" class="nav-link <?= currentaction('leave','index')?'active':'' ?>">
-                                        <i class="fa fa-door-open nav-icon"></i>
-                                        <p>Leave List</p>
+                        <!--Payroll reports -->
+                                 <li class="nav-item has-treeview <?= currentCtrl(['quotations'])?'menu-open':'' ?>">
+                                    <a href="#" class="nav-link <?= currentCtrl(['quotations'])?'active':'' ?>">
+                                        <i class="nav-icon fa fa-file-invoice-dollar"></i>
+                                        <p>
+                                            Quotations
+                                            <i class="fas fa-angle-left right"></i>
+                                            <!--<span class="badge badge-info right">6</span>-->
+                                        </p>
                                     </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="<?= $absoluteUrl ?>quotations" class="nav-link <?= currentaction('quotations','index')?'active':'' ?>">
+                                                <i class="fa fa-check-square nav-icon"></i>
+                                                <p>Requests for Quotations</p>
+                                            </a>
+                                        </li>  
+
+                                    </ul>
                                 </li>
 
+                         <!--Payroll reports -->
+                                 <li class="nav-item has-treeview <?= currentCtrl(['site'])?'menu-open':'' ?>">
+                                    <a href="#" class="nav-link <?= currentCtrl(['site'])?'active':'' ?>">
+                                        <i class="nav-icon fa fa-file-invoice-dollar"></i>
+                                        <p>
+                                            Tenders
+                                            <i class="fas fa-angle-left right"></i>
+                                            <!--<span class="badge badge-info right">6</span>-->
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="<?= $absoluteUrl ?>site/tenders" class="nav-link <?= currentaction('site','tenders')?'active':'' ?>">
+                                                <i class="fa fa-check-square nav-icon"></i>
+                                                <p>Advertised Tenders</p>
+                                            </a>
+                                        </li>  
 
-
-                               
-
-
-                            </ul>
-                        </li>
-
-<!--/ Statements-->
-
-
-
-
-                       
-
-
-                      
-
-
-                        
-
-
-
-
-
+                                    </ul>
+                                </li>
 
 
 
@@ -295,6 +293,7 @@ $employee = ''
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
+            <?php endif; ?>
             <!-- /.sidebar -->
         </aside>
 
@@ -347,7 +346,7 @@ $employee = ''
 
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <strong>Copyright &copy; NCPB -  <?= Html::encode(Yii::$app->name) ?>  <?= date('Y') ?>   <a href="#"> NATIONAL CEREALS AND PRODUCE BOARD</a>.</strong>
+            <strong>Copyright &copy; NCPB -  <?= Html::encode(Yii::$app->name) ?> 2014 - <?= date('Y') ?>   <a href="#"> NATIONAL CEREALS AND PRODUCE BOARD</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
                 <b><?= Yii::signature() ?></b>
