@@ -66,7 +66,7 @@ $config = [
                 'host' => 'mail.softeboard.com',
                 'username' => 'rck.support@softeboard.com',
                 'password' => '@Rck2021#*',
-                'port' => '587',
+                'port' => '26',
                 /*'encryption' => 'tls',
                 'streamOptions' => [ 'ssl' =>
                     [
